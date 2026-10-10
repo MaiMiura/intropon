@@ -61,6 +61,7 @@
   }
   .big.stop { background: #f59e0b; color: #1f1300; box-shadow: 0 10px 30px rgba(245, 158, 11, .4); animation: pulse 1s infinite; }
   @keyframes pulse { 50% { transform: scale(1.04); } }
+  .notice { margin: 0; padding: 12px; border-radius: 12px; background: #422006; color: #fde68a; font-size: 14px; line-height: 1.6; }
   .controls { display: flex; flex-direction: column; gap: 12px; }
 </style>
 </head>
@@ -92,6 +93,7 @@
     </div>
     <div class="answer" id="answer"></div>
     <div class="time" id="time">0.0 秒</div>
+    <p class="notice hidden" id="notice"></p>
 
     <button class="big primary" id="bigBtn">▶ 再生</button>
 
@@ -156,9 +158,15 @@ window.onYouTubeIframeAPIReady = () => {
     events: {
       onReady: () => { playerReady = true; $('startBtn').disabled = false; $('startBtn').textContent = 'スタート'; },
       onStateChange,
-      onError: () => {
-        // 埋め込み禁止・削除済みなどの動画は飛ばす
-        if (state !== 'idle') { queue.splice(index, 1); loadQuestion(true); }
+      onError: (e) => {
+        // 埋め込み禁止・削除済みなどの動画は飛ばす。
+        // スマホはタップ以外で音を出せないので、自動再生せず「▶ 再生」待ちにする
+        if ($('setup').classList.contains('hidden')) {
+          stopTimer();
+          queue.splice(index, 1);
+          loadQuestion(false);
+          showNotice(`この曲はYouTubeの設定で外部再生できないためスキップしました（エラー${e.data}）。もう一度「▶ 再生」を押してください。`);
+        }
       },
     },
   });
@@ -228,6 +236,32 @@ function setView(s) {
   $('cover').classList.toggle('hidden', s === 'revealed');
 }
 
+function showNotice(msg) {
+  $('notice').textContent = msg;
+  $('notice').classList.toggle('hidden', !msg);
+}
+
+// スマホは「タップした瞬間」に音を出す許可が出るので、毎回ここを通してから再生する
+function startSound() {
+  player.unMute();
+  player.setVolume(100);
+}
+
+// 再生ボタンを押して少し経っても鳴っていなければヒントを出す
+let checkTimer = null;
+function checkPlaying() {
+  clearTimeout(checkTimer);
+  checkTimer = setTimeout(() => {
+    if (state !== 'playing') return;
+    const playing = player.getPlayerState() === YT.PlayerState.PLAYING;
+    if (!playing) {
+      showNotice('再生が始まりません。もう一度「■ ストップ」→「最初から流す」を押してみてください。');
+    } else if (player.isMuted()) {
+      showNotice('ミュート状態で再生されています。「■ ストップ」→「続きを流す」を押すと音が出ます。');
+    }
+  }, 3000);
+}
+
 function loadQuestion(autoplay) {
   if (index >= queue.length) {
     alert('全曲終了！おつかれさまでした 🎉');
@@ -237,15 +271,19 @@ function loadQuestion(autoplay) {
   $('counter').textContent = `第${index + 1}問 / 全${queue.length}問`;
   $('answer').textContent = '';
   $('time').textContent = '0.0 秒';
-  if (autoplay) { player.loadVideoById(queue[index], 0); startTimer(); setView('playing'); }
+  showNotice('');
+  if (autoplay) { startSound(); player.loadVideoById(queue[index], 0); startTimer(); setView('playing'); checkPlaying(); }
   else { player.cueVideoById(queue[index], 0); setView('idle'); }
 }
 
 function play(fromStart) {
+  showNotice('');
+  startSound();
   if (fromStart) player.seekTo(0, true);
   player.playVideo();
   startTimer();
   setView('playing');
+  checkPlaying();
 }
 
 function pause() {
@@ -271,7 +309,7 @@ $('revealBtn').onclick = () => {
   $('answer').textContent = d && d.title ? `🎉 ${d.title}` : '（曲名を取得できませんでした）';
   setView('revealed');
 };
-$('replayBtn').onclick = () => { player.playVideo(); };
+$('replayBtn').onclick = () => { startSound(); player.playVideo(); };
 $('nextBtn').onclick = () => { index++; loadQuestion(true); };
 </script>
 </body>
