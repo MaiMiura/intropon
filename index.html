@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>イントロドン</title>
+<style>
+  :root {
+    --bg: #111827; --card: #1f2937; --text: #f9fafb; --muted: #9ca3af;
+    --accent: #f43f5e; --accent2: #22c55e; --line: #374151;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+    display: flex; flex-direction: column; align-items: center;
+    padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+  }
+  main { width: 100%; max-width: 480px; flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 16px 0; }
+  h1 { margin: 8px 0 0; font-size: 28px; text-align: center; letter-spacing: .05em; }
+  .sub { color: var(--muted); font-size: 14px; text-align: center; margin: 0; }
+  .card { background: var(--card); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  label { font-size: 14px; color: var(--muted); }
+  textarea, input[type=text] {
+    width: 100%; font-size: 16px; padding: 12px; border-radius: 12px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--text);
+  }
+  textarea { min-height: 96px; resize: vertical; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--text); }
+  .check input { width: 20px; height: 20px; }
+  button {
+    font: inherit; font-size: 17px; font-weight: 700; border: 0; border-radius: 14px;
+    padding: 16px; color: var(--text); background: var(--line); cursor: pointer;
+  }
+  button:active { transform: scale(.97); }
+  button:disabled { opacity: .4; }
+  .primary { background: var(--accent); }
+  .ok { background: var(--accent2); color: #052e16; }
+  .row { display: flex; gap: 12px; }
+  .row > * { flex: 1; }
+  .hidden { display: none !important; }
+  .err { color: #fca5a5; font-size: 14px; min-height: 1em; margin: 0; }
+
+  /* game */
+  .top { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
+  .top button { padding: 8px 12px; font-size: 14px; font-weight: 400; }
+  .screen { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000; }
+  .screen #player, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cover {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #312e81, #831843); font-size: 72px; font-weight: 900;
+  }
+  .answer { text-align: center; font-size: 20px; font-weight: 700; min-height: 1.5em; word-break: break-word; }
+  .time { text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 15px; }
+  .big {
+    width: 220px; height: 220px; border-radius: 50%; align-self: center; font-size: 28px;
+    box-shadow: 0 10px 30px rgba(244, 63, 94, .35);
+  }
+  .big.stop { background: #f59e0b; color: #1f1300; box-shadow: 0 10px 30px rgba(245, 158, 11, .4); animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { transform: scale(1.04); } }
+  .controls { display: flex; flex-direction: column; gap: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <!-- 設定画面 -->
+  <section id="setup" class="setup">
+    <h1>🎵 イントロドン</h1>
+    <p class="sub">YouTubeのプレイリストで遊ぶ・ログイン不要</p>
+    <div class="card" style="margin-top:16px">
+      <label for="src">YouTubeプレイリストのURL（または動画URLを1行ずつ）</label>
+      <textarea id="src" placeholder="https://www.youtube.com/playlist?list=PL..."></textarea>
+      <label class="check"><input type="checkbox" id="shuffle" checked> シャッフルする</label>
+      <p class="err" id="err"></p>
+      <button class="primary" id="startBtn" disabled>読み込み中…</button>
+    </div>
+    <p class="sub">※ プレイリストは「公開」または「限定公開」にしてください</p>
+  </section>
+
+  <!-- ゲーム画面 -->
+  <section id="game" class="hidden" style="display:flex;flex-direction:column;gap:16px">
+    <div class="top">
+      <span id="counter">第1問</span>
+      <button id="backBtn">設定に戻る</button>
+    </div>
+    <div class="screen">
+      <div id="player"></div>
+      <div class="cover" id="cover">?</div>
+    </div>
+    <div class="answer" id="answer"></div>
+    <div class="time" id="time">0.0 秒</div>
+
+    <button class="big primary" id="bigBtn">▶ 再生</button>
+
+    <div class="controls hidden" id="pausedCtl">
+      <button class="ok" id="revealBtn">正解を見る</button>
+      <div class="row">
+        <button id="resumeBtn">続きを流す</button>
+        <button id="restartBtn">最初から流す</button>
+      </div>
+    </div>
+    <div class="controls hidden" id="revealCtl">
+      <div class="row">
+        <button id="replayBtn">もう一度聴く</button>
+        <button class="primary" id="nextBtn">次の曲へ ▶</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const STORE_KEY = 'introdon.src';
+
+let player, playerReady = false;
+let queue = [];   // 出題する動画IDのリスト
+let index = 0;    // 今の問題番号
+let state = 'idle'; // idle | playing | paused | revealed
+let timer = null;
+let pendingPlaylist = null; // プレイリスト読み込み待ち
+
+// ---------- 入力の解析 ----------
+function parseSource(text) {
+  const t = text.trim();
+  const list = t.match(/[?&]list=([\w-]+)/);
+  if (list) return { playlist: list[1] };
+  if (/^(PL|OL|UU|RD|FL)[\w-]{10,}$/.test(t)) return { playlist: t };
+  const ids = t.split(/\s+/).map((line) => {
+    const m = line.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);
+    if (m) return m[1];
+    return /^[\w-]{11}$/.test(line) ? line : null;
+  }).filter(Boolean);
+  return ids.length ? { videos: ids } : null;
+}
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ---------- YouTube Player ----------
+const tag = document.createElement('script');
+tag.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(tag);
+
+window.onYouTubeIframeAPIReady = () => {
+  player = new YT.Player('player', {
+    width: '100%', height: '100%',
+    playerVars: { playsinline: 1, controls: 0, disablekb: 1, rel: 0, modestbranding: 1, fs: 0 },
+    events: {
+      onReady: () => { playerReady = true; $('startBtn').disabled = false; $('startBtn').textContent = 'スタート'; },
+      onStateChange,
+      onError: () => {
+        // 埋め込み禁止・削除済みなどの動画は飛ばす
+        if (state !== 'idle') { queue.splice(index, 1); loadQuestion(true); }
+      },
+    },
+  });
+};
+
+function onStateChange(e) {
+  // プレイリストの読み込み完了 → 動画ID一覧を取り出す
+  if (pendingPlaylist && (e.data === YT.PlayerState.CUED || e.data === YT.PlayerState.PLAYING)) {
+    const ids = player.getPlaylist();
+    if (ids && ids.length) {
+      player.stopVideo();
+      const done = pendingPlaylist; pendingPlaylist = null;
+      done(ids);
+    }
+  }
+  if (e.data === YT.PlayerState.ENDED && state === 'playing') pause();
+}
+
+function loadPlaylist(id) {
+  return new Promise((resolve, reject) => {
+    pendingPlaylist = resolve;
+    player.cuePlaylist({ listType: 'playlist', list: id });
+    setTimeout(() => {
+      if (pendingPlaylist) { pendingPlaylist = null; reject(new Error('timeout')); }
+    }, 10000);
+  });
+}
+
+// ---------- 設定画面 ----------
+try { $('src').value = localStorage.getItem(STORE_KEY) || ''; } catch (_) {}
+
+$('startBtn').onclick = async () => {
+  $('err').textContent = '';
+  const src = parseSource($('src').value);
+  if (!src) { $('err').textContent = 'URLを確認してください'; return; }
+  try { localStorage.setItem(STORE_KEY, $('src').value); } catch (_) {}
+
+  let ids = src.videos;
+  if (src.playlist) {
+    $('startBtn').disabled = true; $('startBtn').textContent = 'プレイリスト読み込み中…';
+    try { ids = await loadPlaylist(src.playlist); }
+    catch (_) { $('err').textContent = 'プレイリストを読み込めませんでした（非公開かも？）'; }
+    $('startBtn').disabled = false; $('startBtn').textContent = 'スタート';
+    if (!ids) return;
+  }
+  queue = $('shuffle').checked ? shuffle([...ids]) : [...ids];
+  index = 0;
+  $('setup').classList.add('hidden');
+  $('game').classList.remove('hidden');
+  loadQuestion(false);
+};
+
+$('backBtn').onclick = () => {
+  player.stopVideo(); stopTimer(); state = 'idle';
+  $('game').classList.add('hidden');
+  $('setup').classList.remove('hidden');
+};
+
+// ---------- ゲーム ----------
+function setView(s) {
+  state = s;
+  $('bigBtn').classList.toggle('hidden', s === 'paused' || s === 'revealed');
+  $('bigBtn').classList.toggle('stop', s === 'playing');
+  $('bigBtn').textContent = s === 'playing' ? '■ ストップ' : '▶ 再生';
+  $('pausedCtl').classList.toggle('hidden', s !== 'paused');
+  $('revealCtl').classList.toggle('hidden', s !== 'revealed');
+  $('cover').classList.toggle('hidden', s === 'revealed');
+}
+
+function loadQuestion(autoplay) {
+  if (index >= queue.length) {
+    alert('全曲終了！おつかれさまでした 🎉');
+    $('backBtn').onclick();
+    return;
+  }
+  $('counter').textContent = `第${index + 1}問 / 全${queue.length}問`;
+  $('answer').textContent = '';
+  $('time').textContent = '0.0 秒';
+  if (autoplay) { player.loadVideoById(queue[index], 0); startTimer(); setView('playing'); }
+  else { player.cueVideoById(queue[index], 0); setView('idle'); }
+}
+
+function play(fromStart) {
+  if (fromStart) player.seekTo(0, true);
+  player.playVideo();
+  startTimer();
+  setView('playing');
+}
+
+function pause() {
+  player.pauseVideo();
+  stopTimer();
+  setView('paused');
+}
+
+function startTimer() {
+  stopTimer();
+  timer = setInterval(() => {
+    const t = player.getCurrentTime ? player.getCurrentTime() : 0;
+    $('time').textContent = `${t.toFixed(1)} 秒`;
+  }, 100);
+}
+function stopTimer() { clearInterval(timer); timer = null; }
+
+$('bigBtn').onclick = () => (state === 'playing' ? pause() : play(true));
+$('resumeBtn').onclick = () => play(false);
+$('restartBtn').onclick = () => play(true);
+$('revealBtn').onclick = () => {
+  const d = player.getVideoData();
+  $('answer').textContent = d && d.title ? `🎉 ${d.title}` : '（曲名を取得できませんでした）';
+  setView('revealed');
+};
+$('replayBtn').onclick = () => { player.playVideo(); };
+$('nextBtn').onclick = () => { index++; loadQuestion(true); };
+</script>
+</body>
+</html>
