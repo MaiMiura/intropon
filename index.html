@@ -9,7 +9,7 @@
 <style>
   :root {
     --bg: #111827; --card: #1f2937; --text: #f9fafb; --muted: #9ca3af;
-    --accent: #f43f5e; --accent2: #22c55e; --line: #374151;
+    --accent: #f43f5e; --accent2: #22c55e; --line: #374151; --warn: #f59e0b;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; height: 100%; }
@@ -17,112 +17,203 @@
     background: var(--bg); color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
     display: flex; flex-direction: column; align-items: center;
-    padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+    padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom);
+    -webkit-user-select: none; user-select: none;
   }
-  main { width: 100%; max-width: 480px; flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 16px 0; }
-  h1 { margin: 8px 0 0; font-size: 28px; text-align: center; letter-spacing: .05em; }
+  main { width: 100%; max-width: 560px; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  section { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 12px 0; min-height: 0; }
+  h1 { margin: 8px 0 0; font-size: 32px; text-align: center; letter-spacing: .05em; }
+  h2 { margin: 0; font-size: 18px; }
   .sub { color: var(--muted); font-size: 14px; text-align: center; margin: 0; }
   .card { background: var(--card); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-  label { font-size: 14px; color: var(--muted); }
-  textarea, input[type=text] {
-    width: 100%; font-size: 16px; padding: 12px; border-radius: 12px;
+  label { font-size: 15px; color: var(--muted); }
+  textarea, input[type=text], input[type=number] {
+    width: 100%; font-size: 17px; padding: 14px; border-radius: 12px;
     border: 1px solid var(--line); background: var(--bg); color: var(--text);
+    -webkit-user-select: text; user-select: text;
   }
   textarea { min-height: 96px; resize: vertical; }
-  .check { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--text); }
-  .check input { width: 20px; height: 20px; }
+  .check { display: flex; align-items: center; gap: 10px; font-size: 17px; color: var(--text); }
+  .check input { width: 24px; height: 24px; }
   button {
-    font: inherit; font-size: 17px; font-weight: 700; border: 0; border-radius: 14px;
-    padding: 16px; color: var(--text); background: var(--line); cursor: pointer;
+    font: inherit; font-size: 20px; font-weight: 800; border: 0; border-radius: 18px;
+    padding: 18px; color: var(--text); background: var(--line); cursor: pointer;
+    touch-action: manipulation;
   }
-  button:active { transform: scale(.97); }
+  button:active { transform: scale(.97); filter: brightness(1.15); }
   button:disabled { opacity: .4; }
   .primary { background: var(--accent); }
   .ok { background: var(--accent2); color: #052e16; }
-  .row { display: flex; gap: 12px; }
+  .row { display: flex; gap: 10px; }
   .row > * { flex: 1; }
   .hidden { display: none !important; }
   .err { color: #fca5a5; font-size: 14px; min-height: 1em; margin: 0; }
+  .huge { font-size: 26px; padding: 24px; }
 
-  /* game */
-  .top { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
-  .top button { padding: 8px 12px; font-size: 14px; font-weight: 400; }
-  .screen { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: #000; }
+  /* 参加者入力 */
+  .players { display: flex; flex-direction: column; gap: 8px; }
+  .player-row { display: flex; gap: 8px; }
+  .player-row input { flex: 1; }
+  .player-row button { padding: 0 18px; font-size: 22px; }
+
+  /* ゲーム画面 */
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--muted); font-size: 15px; }
+  .top button { padding: 10px 14px; font-size: 15px; font-weight: 600; white-space: nowrap; }
+  .scores { display: flex; gap: 6px; overflow-x: auto; flex-shrink: 0; }
+  .chip { flex: 1 0 auto; background: var(--card); border-radius: 12px; padding: 6px 12px; text-align: center; font-size: 14px; }
+  .chip b { display: block; font-size: 20px; color: #fde68a; }
+  .screen { position: relative; width: 100%; height: 26dvh; min-height: 140px; flex-shrink: 0; border-radius: 16px; overflow: hidden; background: #000; }
   .screen #player, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
   .cover {
     position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #312e81, #831843); font-size: 72px; font-weight: 900;
+    background: linear-gradient(135deg, #312e81, #831843); font-size: 80px; font-weight: 900;
   }
-  .answer { text-align: center; font-size: 20px; font-weight: 700; min-height: 1.5em; word-break: break-word; }
-  .time { text-align: center; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 15px; }
-  .big {
-    width: 220px; height: 220px; border-radius: 50%; align-self: center; font-size: 28px;
-    box-shadow: 0 10px 30px rgba(244, 63, 94, .35);
+  .info { display: flex; justify-content: center; align-items: baseline; gap: 12px; flex-shrink: 0; }
+  .answer { text-align: center; font-size: 20px; font-weight: 800; word-break: break-word; }
+  .time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 15px; }
+  .notice { margin: 0; padding: 12px; border-radius: 12px; background: #422006; color: #fde68a; font-size: 14px; line-height: 1.6; flex-shrink: 0; }
+
+  /* 残りの高さを全部ボタンに使う */
+  .area { flex: 1; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+  .area > .fill { flex: 1; }
+  .big { width: 100%; font-size: 44px; border-radius: 28px; box-shadow: 0 10px 30px rgba(244, 63, 94, .35); }
+  .big.stop { background: var(--warn); color: #1f1300; box-shadow: 0 10px 30px rgba(245, 158, 11, .4); animation: pulse 1s infinite; }
+  @keyframes pulse { 50% { transform: scale(1.02); } }
+
+  .countdown {
+    flex: 1.3; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: var(--card); border-radius: 24px; font-variant-numeric: tabular-nums; min-height: 0;
   }
-  .big.stop { background: #f59e0b; color: #1f1300; box-shadow: 0 10px 30px rgba(245, 158, 11, .4); animation: pulse 1s infinite; }
-  @keyframes pulse { 50% { transform: scale(1.04); } }
-  .notice { margin: 0; padding: 12px; border-radius: 12px; background: #422006; color: #fde68a; font-size: 14px; line-height: 1.6; }
-  .controls { display: flex; flex-direction: column; gap: 12px; }
+  .countdown .num { font-size: min(30vw, 20dvh); font-weight: 900; line-height: 1; }
+  .countdown .label { color: var(--muted); font-size: 16px; }
+  .countdown.urgent .num { color: var(--accent); }
+  .countdown.over { background: #7f1d1d; }
+  .countdown.over .num { font-size: min(14vw, 10dvh); color: #fff; }
+  .area .reveal { flex: 1.2; font-size: 30px; }
+  .area .row { flex: 1; }
+  .area .row button { font-size: 22px; }
+
+  /* 正解者ボタン */
+  .who { color: var(--muted); font-size: 15px; text-align: center; margin: 0; }
+  .pgrid { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: 10px; min-height: 0; }
+  .pgrid.one { grid-template-columns: 1fr; }
+  .pbtn { font-size: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px; min-height: 0; }
+  .pbtn small { font-size: 15px; font-weight: 600; opacity: .8; }
+  .pbtn.on { background: var(--accent2); color: #052e16; }
+  .area .next { flex: 0 0 auto; }
+  .area .next button { padding: 22px; }
+
+  /* 結果 */
+  .rank { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto; }
+  .rank-row { display: flex; align-items: center; gap: 14px; background: var(--card); border-radius: 16px; padding: 16px 18px; font-size: 22px; font-weight: 800; }
+  .rank-row .pos { width: 2em; text-align: center; font-size: 26px; }
+  .rank-row .name { flex: 1; word-break: break-all; }
+  .rank-row .pt { color: #fde68a; }
+  .adj { display: flex; gap: 6px; }
+  .adj button { padding: 8px 14px; font-size: 18px; }
 </style>
 </head>
 <body>
 <main>
   <!-- 設定画面 -->
-  <section id="setup" class="setup">
+  <section id="setup">
     <h1>🎵 イントロドン</h1>
     <p class="sub">YouTubeのプレイリストで遊ぶ・ログイン不要</p>
-    <div class="card" style="margin-top:16px">
+    <div class="card">
       <label for="src">YouTubeプレイリストのURL（または動画URLを1行ずつ）</label>
       <textarea id="src" placeholder="https://www.youtube.com/playlist?list=PL..."></textarea>
       <label class="check"><input type="checkbox" id="shuffle" checked> シャッフルする</label>
-      <p class="err" id="err"></p>
-      <button class="primary" id="startBtn" disabled>読み込み中…</button>
     </div>
-    <p class="sub">※ プレイリストは「公開」または「限定公開」にしてください</p>
+    <div class="card">
+      <h2>参加者（得点を記録）</h2>
+      <div class="players" id="players"></div>
+      <button id="addPlayerBtn">＋ 参加者を追加</button>
+      <p class="sub">空欄のままなら得点なしで遊べます</p>
+    </div>
+    <div class="card">
+      <label for="countSec">ストップ後のカウントダウン（秒・0で無し）</label>
+      <input type="number" id="countSec" inputmode="numeric" min="0" max="99" value="10">
+    </div>
+    <p class="err" id="err"></p>
+    <button class="primary huge" id="startBtn" disabled>読み込み中…</button>
+    <button class="hidden" id="resumeGameBtn">前回の得点のまま続ける</button>
   </section>
 
   <!-- ゲーム画面 -->
-  <section id="game" class="hidden" style="display:flex;flex-direction:column;gap:16px">
+  <section id="game" class="hidden">
     <div class="top">
       <span id="counter">第1問</span>
-      <button id="backBtn">設定に戻る</button>
+      <div class="row" style="flex:0 0 auto">
+        <button id="resultBtn">🏆 結果</button>
+        <button id="backBtn">設定</button>
+      </div>
     </div>
+    <div class="scores" id="scores"></div>
     <div class="screen">
       <div id="player"></div>
       <div class="cover" id="cover">?</div>
     </div>
-    <div class="answer" id="answer"></div>
-    <div class="time" id="time">0.0 秒</div>
+    <div class="info">
+      <div class="answer" id="answer"></div>
+      <div class="time" id="time">0.0 秒</div>
+    </div>
     <p class="notice hidden" id="notice"></p>
 
-    <button class="big primary" id="bigBtn">▶ 再生</button>
+    <!-- 再生前・再生中：画面いっぱいの1ボタン -->
+    <div class="area" id="playArea">
+      <button class="big primary fill" id="bigBtn">▶ 再生</button>
+    </div>
 
-    <div class="controls hidden" id="pausedCtl">
-      <button class="ok" id="revealBtn">正解を見る</button>
+    <!-- ストップ後：カウントダウン＋操作 -->
+    <div class="area hidden" id="pausedArea">
+      <div class="countdown" id="countdown">
+        <div class="num" id="countNum">10</div>
+        <div class="label" id="countLabel">回答タイム</div>
+      </div>
+      <button class="ok reveal" id="revealBtn">正解を見る</button>
       <div class="row">
         <button id="resumeBtn">続きを流す</button>
         <button id="restartBtn">最初から流す</button>
       </div>
     </div>
-    <div class="controls hidden" id="revealCtl">
-      <div class="row">
+
+    <!-- 正解表示後：正解者を選んで次へ -->
+    <div class="area hidden" id="revealArea">
+      <p class="who" id="whoLabel">正解した人をタップ（もう一度押すと取り消し）</p>
+      <div class="pgrid" id="pgrid"></div>
+      <div class="row next">
         <button id="replayBtn">もう一度聴く</button>
         <button class="primary" id="nextBtn">次の曲へ ▶</button>
       </div>
     </div>
   </section>
+
+  <!-- 結果画面 -->
+  <section id="result" class="hidden">
+    <h1>🏆 結果</h1>
+    <p class="sub" id="resultSub"></p>
+    <div class="rank" id="rank"></div>
+    <button class="primary huge" id="closeResultBtn">ゲームに戻る</button>
+    <button id="endGameBtn">終了して設定へ</button>
+  </section>
 </main>
 
 <script>
 const $ = (id) => document.getElementById(id);
-const STORE_KEY = 'introdon.src';
+const STORE = { src: 'introdon.src', players: 'introdon.players', count: 'introdon.count', scores: 'introdon.scores' };
+const load = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (_) { return d; } };
+const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} };
 
-let player, playerReady = false;
+let player;
 let queue = [];   // 出題する動画IDのリスト
 let index = 0;    // 今の問題番号
 let state = 'idle'; // idle | playing | paused | revealed
 let timer = null;
 let pendingPlaylist = null; // プレイリスト読み込み待ち
+
+let players = [];   // [{ name, score }]
+let winners = new Set(); // この問題で正解した人（index）
+let countSec = 10;
 
 // ---------- 入力の解析 ----------
 function parseSource(text) {
@@ -146,6 +237,29 @@ function shuffle(a) {
   return a;
 }
 
+function show(id) {
+  for (const s of ['setup', 'game', 'result']) $(s).classList.toggle('hidden', s !== id);
+}
+
+// ---------- 効果音（カウントダウン用） ----------
+let audioCtx = null;
+// iPhoneはタップ中にしか音の準備ができないので、ボタンを押したときに呼ぶ
+function unlockAudio() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  } catch (_) {}
+}
+function beep(freq, ms) {
+  if (!audioCtx) return;
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.frequency.value = freq; o.type = 'square';
+  g.gain.setValueAtTime(0.15, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + ms / 1000);
+  o.connect(g).connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + ms / 1000);
+}
+
 // ---------- YouTube Player ----------
 const tag = document.createElement('script');
 tag.src = 'https://www.youtube.com/iframe_api';
@@ -156,13 +270,13 @@ window.onYouTubeIframeAPIReady = () => {
     width: '100%', height: '100%',
     playerVars: { playsinline: 1, controls: 0, disablekb: 1, rel: 0, modestbranding: 1, fs: 0 },
     events: {
-      onReady: () => { playerReady = true; $('startBtn').disabled = false; $('startBtn').textContent = 'スタート'; },
+      onReady: () => { $('startBtn').disabled = false; $('startBtn').textContent = 'スタート'; },
       onStateChange,
       onError: (e) => {
         // 埋め込み禁止・削除済みなどの動画は飛ばす。
         // スマホはタップ以外で音を出せないので、自動再生せず「▶ 再生」待ちにする
-        if ($('setup').classList.contains('hidden')) {
-          stopTimer();
+        if (!$('game').classList.contains('hidden')) {
+          stopTimer(); stopCountdown();
           queue.splice(index, 1);
           loadQuestion(false);
           showNotice(`この曲はYouTubeの設定で外部再生できないためスキップしました（エラー${e.data}）。もう一度「▶ 再生」を押してください。`);
@@ -196,13 +310,42 @@ function loadPlaylist(id) {
 }
 
 // ---------- 設定画面 ----------
-try { $('src').value = localStorage.getItem(STORE_KEY) || ''; } catch (_) {}
+function addPlayerInput(name = '') {
+  const row = document.createElement('div');
+  row.className = 'player-row';
+  row.innerHTML = '<input type="text" placeholder="名前" maxlength="12"><button aria-label="削除">×</button>';
+  row.querySelector('input').value = name;
+  row.querySelector('button').onclick = () => row.remove();
+  $('players').appendChild(row);
+  return row.querySelector('input');
+}
 
-$('startBtn').onclick = async () => {
+$('src').value = load(STORE.src, '');
+$('countSec').value = load(STORE.count, 10);
+const savedNames = load(STORE.players, []);
+(savedNames.length ? savedNames : ['', '']).forEach((n) => addPlayerInput(n));
+$('addPlayerBtn').onclick = () => addPlayerInput().focus();
+
+// 前回の得点が残っていれば「続ける」を出す
+const savedGame = load(STORE.scores, null);
+if (savedGame && savedGame.players && savedGame.players.length) {
+  $('resumeGameBtn').classList.remove('hidden');
+}
+
+function readSettings() {
+  const names = [...$('players').querySelectorAll('input')].map((i) => i.value.trim()).filter(Boolean);
+  save(STORE.players, names);
+  countSec = Math.max(0, Math.min(99, parseInt($('countSec').value, 10) || 0));
+  save(STORE.count, countSec);
+  return names;
+}
+
+async function startGame(keepScores) {
   $('err').textContent = '';
+  const names = readSettings();
   const src = parseSource($('src').value);
   if (!src) { $('err').textContent = 'URLを確認してください'; return; }
-  try { localStorage.setItem(STORE_KEY, $('src').value); } catch (_) {}
+  save(STORE.src, $('src').value);
 
   let ids = src.videos;
   if (src.playlist) {
@@ -212,27 +355,150 @@ $('startBtn').onclick = async () => {
     $('startBtn').disabled = false; $('startBtn').textContent = 'スタート';
     if (!ids) return;
   }
+
+  if (keepScores && savedGame) {
+    // 名前が同じ人は前回の点数を引き継ぐ
+    const prev = Object.fromEntries(savedGame.players.map((p) => [p.name, p.score]));
+    players = names.map((name) => ({ name, score: prev[name] || 0 }));
+  } else {
+    players = names.map((name) => ({ name, score: 0 }));
+  }
+  saveScores();
+
   queue = $('shuffle').checked ? shuffle([...ids]) : [...ids];
   index = 0;
-  $('setup').classList.add('hidden');
-  $('game').classList.remove('hidden');
+  show('game');
+  renderScores();
   loadQuestion(false);
-};
+}
+
+$('startBtn').onclick = () => startGame(false);
+$('resumeGameBtn').onclick = () => startGame(true);
 
 $('backBtn').onclick = () => {
-  player.stopVideo(); stopTimer(); state = 'idle';
-  $('game').classList.add('hidden');
-  $('setup').classList.remove('hidden');
+  if (!confirm('設定画面に戻りますか？（得点は保存されています）')) return;
+  stopAll();
+  show('setup');
+  $('resumeGameBtn').classList.toggle('hidden', !players.length);
 };
+
+function stopAll() {
+  player.stopVideo(); stopTimer(); stopCountdown(); state = 'idle';
+}
+
+// ---------- 得点 ----------
+function saveScores() { save(STORE.scores, { players }); }
+
+function renderScores() {
+  $('scores').classList.toggle('hidden', !players.length);
+  $('resultBtn').classList.toggle('hidden', !players.length);
+  $('scores').innerHTML = '';
+  players.forEach((p) => {
+    const c = document.createElement('div');
+    c.className = 'chip';
+    c.innerHTML = '<span></span><b></b>';
+    c.querySelector('span').textContent = p.name;
+    c.querySelector('b').textContent = p.score;
+    $('scores').appendChild(c);
+  });
+}
+
+function renderWinnerButtons() {
+  const grid = $('pgrid');
+  grid.innerHTML = '';
+  grid.classList.toggle('one', players.length === 1);
+  $('whoLabel').classList.toggle('hidden', !players.length);
+  grid.classList.toggle('hidden', !players.length);
+  players.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.className = 'pbtn' + (winners.has(i) ? ' on' : '');
+    b.innerHTML = '<span></span><small></small>';
+    b.querySelector('span').textContent = p.name;
+    b.querySelector('small').textContent = winners.has(i) ? `⭕ 正解！ ${p.score}点` : `${p.score}点`;
+    b.onclick = () => {
+      if (winners.has(i)) { winners.delete(i); p.score--; }
+      else { winners.add(i); p.score++; }
+      saveScores(); renderScores(); renderWinnerButtons();
+    };
+    grid.appendChild(b);
+  });
+}
+
+function showResult(final) {
+  const sorted = players.map((p, i) => ({ ...p, i })).sort((a, b) => b.score - a.score);
+  $('resultSub').textContent = final ? '全曲終了！おつかれさまでした 🎉' : `第${index + 1}問 時点`;
+  $('rank').innerHTML = '';
+  let lastScore = null, pos = 0;
+  sorted.forEach((p, n) => {
+    if (p.score !== lastScore) { pos = n + 1; lastScore = p.score; }
+    const row = document.createElement('div');
+    row.className = 'rank-row';
+    row.innerHTML = '<span class="pos"></span><span class="name"></span><span class="pt"></span><span class="adj"><button>−</button><button>＋</button></span>';
+    row.querySelector('.pos').textContent = ['🥇', '🥈', '🥉'][pos - 1] || pos;
+    row.querySelector('.name').textContent = p.name;
+    row.querySelector('.pt').textContent = `${p.score}点`;
+    // 手動で点数を直せるように
+    const [minus, plus] = row.querySelectorAll('.adj button');
+    minus.onclick = () => { players[p.i].score--; saveScores(); renderScores(); showResult(final); };
+    plus.onclick = () => { players[p.i].score++; saveScores(); renderScores(); showResult(final); };
+    $('rank').appendChild(row);
+  });
+  $('closeResultBtn').classList.toggle('hidden', final);
+  show('result');
+}
+
+$('resultBtn').onclick = () => {
+  if (state === 'playing') pause();
+  showResult(false);
+};
+$('closeResultBtn').onclick = () => { show('game'); if (state === 'revealed') renderWinnerButtons(); };
+$('endGameBtn').onclick = () => {
+  stopAll();
+  show('setup');
+  $('resumeGameBtn').classList.toggle('hidden', !players.length);
+};
+
+// ---------- カウントダウン ----------
+let countTimer = null;
+function startCountdown() {
+  stopCountdown();
+  const box = $('countdown');
+  box.classList.toggle('hidden', countSec === 0);
+  if (countSec === 0) return;
+  const end = Date.now() + countSec * 1000;
+  let lastShown = null;
+  const tick = () => {
+    const left = Math.ceil((end - Date.now()) / 1000);
+    if (left === lastShown) return;
+    lastShown = left;
+    if (left <= 0) {
+      stopCountdown();
+      box.classList.remove('urgent'); box.classList.add('over');
+      $('countNum').textContent = '時間切れ！';
+      $('countLabel').textContent = '';
+      beep(440, 700);
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      return;
+    }
+    box.classList.toggle('urgent', left <= 3);
+    $('countNum').textContent = left;
+    if (left <= 3) beep(880, 120);
+  };
+  box.classList.remove('over', 'urgent');
+  $('countLabel').textContent = '回答タイム';
+  tick();
+  countTimer = setInterval(tick, 100);
+}
+function stopCountdown() { clearInterval(countTimer); countTimer = null; }
 
 // ---------- ゲーム ----------
 function setView(s) {
   state = s;
-  $('bigBtn').classList.toggle('hidden', s === 'paused' || s === 'revealed');
+  $('playArea').classList.toggle('hidden', s === 'paused' || s === 'revealed');
   $('bigBtn').classList.toggle('stop', s === 'playing');
   $('bigBtn').textContent = s === 'playing' ? '■ ストップ' : '▶ 再生';
-  $('pausedCtl').classList.toggle('hidden', s !== 'paused');
-  $('revealCtl').classList.toggle('hidden', s !== 'revealed');
+  $('pausedArea').classList.toggle('hidden', s !== 'paused');
+  $('revealArea').classList.toggle('hidden', s !== 'revealed');
   $('cover').classList.toggle('hidden', s === 'revealed');
 }
 
@@ -243,6 +509,7 @@ function showNotice(msg) {
 
 // スマホは「タップした瞬間」に音を出す許可が出るので、毎回ここを通してから再生する
 function startSound() {
+  unlockAudio();
   player.unMute();
   player.setVolume(100);
 }
@@ -264,10 +531,12 @@ function checkPlaying() {
 
 function loadQuestion(autoplay) {
   if (index >= queue.length) {
-    alert('全曲終了！おつかれさまでした 🎉');
-    $('backBtn').onclick();
+    stopAll();
+    if (players.length) showResult(true);
+    else { alert('全曲終了！おつかれさまでした 🎉'); show('setup'); }
     return;
   }
+  winners = new Set();
   $('counter').textContent = `第${index + 1}問 / 全${queue.length}問`;
   $('answer').textContent = '';
   $('time').textContent = '0.0 秒';
@@ -278,6 +547,7 @@ function loadQuestion(autoplay) {
 
 function play(fromStart) {
   showNotice('');
+  stopCountdown();
   startSound();
   if (fromStart) player.seekTo(0, true);
   player.playVideo();
@@ -287,9 +557,11 @@ function play(fromStart) {
 }
 
 function pause() {
+  unlockAudio();
   player.pauseVideo();
   stopTimer();
   setView('paused');
+  startCountdown();
 }
 
 function startTimer() {
@@ -305,9 +577,11 @@ $('bigBtn').onclick = () => (state === 'playing' ? pause() : play(true));
 $('resumeBtn').onclick = () => play(false);
 $('restartBtn').onclick = () => play(true);
 $('revealBtn').onclick = () => {
+  stopCountdown();
   const d = player.getVideoData();
   $('answer').textContent = d && d.title ? `🎉 ${d.title}` : '（曲名を取得できませんでした）';
   setView('revealed');
+  renderWinnerButtons();
 };
 $('replayBtn').onclick = () => { startSound(); player.playVideo(); };
 $('nextBtn').onclick = () => { index++; loadQuestion(true); };
