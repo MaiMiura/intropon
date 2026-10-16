@@ -6,6 +6,14 @@
 <meta name="theme-color" content="#111827">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>イントロポン</title>
+<!-- Google Analytics（プレイ回数の計測） -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VST1Q33NYH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VST1Q33NYH');
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍾</text></svg>">
 <style>
   :root {
@@ -138,6 +146,7 @@
     <p class="err" id="err"></p>
     <button class="primary huge" id="startBtn" disabled>読み込み中…</button>
     <button class="hidden" id="resumeGameBtn">前回の得点のまま続ける</button>
+    <p class="sub">このサイトはプレイ回数の計測にGoogle アナリティクスを使っています（参加者の名前やプレイリストは送信しません）</p>
   </section>
 
   <!-- ゲーム画面 -->
@@ -215,6 +224,12 @@ let pendingPlaylist = null; // プレイリスト読み込み待ち
 let players = [];   // [{ name, score }]
 let winners = new Set(); // この問題で正解した人（index）
 let countSec = 10;
+let trackedIndex = -1; // 「曲を再生」を記録済みの問題番号（同じ問題の再生し直しは数えない）
+
+// Google アナリティクスにイベントを送る（読み込めなくてもゲームは動くように）
+function track(name, params) {
+  try { if (window.gtag) gtag('event', name, params); } catch (_) {}
+}
 
 // ---------- 入力の解析 ----------
 function parseSource(text) {
@@ -279,6 +294,7 @@ window.onYouTubeIframeAPIReady = () => {
         if (!$('game').classList.contains('hidden')) {
           stopTimer(); stopCountdown();
           queue.splice(index, 1);
+          trackedIndex = -1; // 次の曲は同じ問題番号に繰り上がるので、改めて数える
           loadQuestion(false);
           showNotice(`この曲はYouTubeの設定で外部再生できないためスキップしました（エラー${e.data}）。もう一度「▶ 再生」を押してください。`);
         }
@@ -368,6 +384,8 @@ async function startGame(keepScores) {
 
   queue = $('shuffle').checked ? shuffle([...ids]) : [...ids];
   index = 0;
+  trackedIndex = -1;
+  track('game_start', { player_count: players.length, song_count: queue.length, resumed: keepScores ? 1 : 0 });
   show('game');
   renderScores();
   loadQuestion(false);
@@ -533,6 +551,7 @@ function checkPlaying() {
 function loadQuestion(autoplay) {
   if (index >= queue.length) {
     stopAll();
+    track('game_complete', { player_count: players.length, song_count: queue.length });
     if (players.length) showResult(true);
     else { alert('全曲終了！おつかれさまでした 🎉'); show('setup'); }
     return;
@@ -542,11 +561,18 @@ function loadQuestion(autoplay) {
   $('answer').textContent = '';
   $('time').textContent = '0.0 秒';
   showNotice('');
-  if (autoplay) { startSound(); player.loadVideoById(queue[index], 0); startTimer(); setView('playing'); checkPlaying(); }
+  if (autoplay) { trackSongPlay(); startSound(); player.loadVideoById(queue[index], 0); startTimer(); setView('playing'); checkPlaying(); }
   else { player.cueVideoById(queue[index], 0); setView('idle'); }
 }
 
+function trackSongPlay() {
+  if (trackedIndex === index) return;
+  trackedIndex = index;
+  track('song_play', { question_number: index + 1 });
+}
+
 function play(fromStart) {
+  trackSongPlay();
   showNotice('');
   stopCountdown();
   startSound();
