@@ -32,6 +32,14 @@
   main { width: 100%; max-width: 560px; flex: 1; display: flex; flex-direction: column; min-height: 0; }
   section { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 12px 0; min-height: 0; }
   h1 { margin: 8px 0 0; font-size: 32px; text-align: center; letter-spacing: .05em; }
+  .title { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .qr-btn { padding: 8px; border-radius: 12px; background: var(--card); line-height: 0; margin-top: 8px; }
+  .qr-btn svg { width: 28px; height: 28px; }
+
+  /* QRポスター表示 */
+  .poster { position: fixed; inset: 0; z-index: 10; background: rgba(0, 0, 0, .85); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 16px; }
+  .poster img { width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 120px); min-height: 0; object-fit: contain; border-radius: 16px; }
+  .poster button { padding: 14px 40px; }
   h2 { margin: 0; font-size: 18px; }
   .sub { color: var(--muted); font-size: 14px; text-align: center; margin: 0; }
   .card { background: var(--card); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
@@ -126,7 +134,14 @@
 <main>
   <!-- 設定画面 -->
   <section id="setup">
-    <h1>🍾 イントロポン</h1>
+    <div class="title">
+      <h1>🍾 イントロポン</h1>
+      <button class="qr-btn" id="qrBtn" aria-label="QRコードを表示">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h2v2h-2v-2zm4 0h4v2h-4v-2zm-4 4h2v4h-2v-4zm4 0h2v2h2v4h-4v-6zm4-2h2v2h-2v-2zM6 6h2v2H6V6zm10 0h2v2h-2V6zM6 16h2v2H6v-2z"/>
+        </svg>
+      </button>
+    </div>
     <p class="sub">YouTubeのプレイリストで遊ぶ・ログイン不要</p>
     <div class="card">
       <label for="src">YouTubeプレイリストのURL（または動画URLを1行ずつ）</label>
@@ -207,6 +222,12 @@
     <button id="endGameBtn">終了して設定へ</button>
   </section>
 </main>
+
+<!-- QRポスター（タップで閉じる） -->
+<div class="poster hidden" id="poster">
+  <img src="poster.jpg" alt="イントロポンのQRコード">
+  <button id="posterClose">閉じる</button>
+</div>
 
 <script>
 const $ = (id) => document.getElementById(id);
@@ -325,6 +346,10 @@ function loadPlaylist(id) {
     }, 10000);
   });
 }
+
+// ---------- QRポスター ----------
+$('qrBtn').onclick = () => { $('poster').classList.remove('hidden'); track('qr_open'); };
+$('poster').onclick = () => $('poster').classList.add('hidden');
 
 // ---------- 設定画面 ----------
 function addPlayerInput(name = '') {
