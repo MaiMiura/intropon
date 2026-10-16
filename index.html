@@ -50,6 +50,8 @@
     -webkit-user-select: text; user-select: text;
   }
   textarea { min-height: 96px; resize: vertical; }
+  .src-opts { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .clear-btn { padding: 10px 16px; font-size: 16px; font-weight: 700; }
   .check { display: flex; align-items: center; gap: 10px; font-size: 17px; color: var(--text); }
   .check input { width: 24px; height: 24px; }
   button {
@@ -146,7 +148,10 @@
     <div class="card">
       <label for="src">YouTubeプレイリストのURL（または動画URLを1行ずつ）</label>
       <textarea id="src" placeholder="https://www.youtube.com/playlist?list=PL..."></textarea>
-      <label class="check"><input type="checkbox" id="shuffle" checked> シャッフルする</label>
+      <div class="src-opts">
+        <label class="check"><input type="checkbox" id="shuffle" checked> シャッフルする</label>
+        <button class="clear-btn" id="clearSrcBtn">✕ クリア</button>
+      </div>
     </div>
     <div class="card">
       <h2>参加者（得点を記録）</h2>
@@ -352,6 +357,16 @@ $('qrBtn').onclick = () => { $('poster').classList.remove('hidden'); track('qr_o
 $('poster').onclick = () => $('poster').classList.add('hidden');
 
 // ---------- 設定画面 ----------
+// URL欄を空にする（保存していたURLも消す）。空のときはボタンを押せないように
+function updateClearBtn() { $('clearSrcBtn').disabled = !$('src').value.trim(); }
+$('clearSrcBtn').onclick = () => {
+  $('src').value = '';
+  save(STORE.src, '');
+  $('err').textContent = '';
+  updateClearBtn();
+  $('src').focus();
+};
+$('src').addEventListener('input', updateClearBtn);
 function addPlayerInput(name = '') {
   const row = document.createElement('div');
   row.className = 'player-row';
@@ -363,6 +378,7 @@ function addPlayerInput(name = '') {
 }
 
 $('src').value = load(STORE.src, '');
+updateClearBtn();
 $('countSec').value = load(STORE.count, 10);
 const savedNames = load(STORE.players, []);
 (savedNames.length ? savedNames : ['', '']).forEach((n) => addPlayerInput(n));
