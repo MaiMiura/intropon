@@ -1,0 +1,702 @@
+{
+  "name": "DAM 月間TOP50（10月更新）",
+  "source": "https://www.clubdam.com/ranking/#ranking-monthly",
+  "updated": "2026-10-01",
+  "songs": [
+    {
+      "rank": 1,
+      "title": "好きすぎて滅！",
+      "artist": "M!LK",
+      "damRequestNo": "1268-85",
+      "videoId": "ZVUxJsPfoX8",
+      "videoTitle": "M!LK - 好きすぎて滅！(Official Music Video)",
+      "channel": "M!LK",
+      "status": "OK"
+    },
+    {
+      "rank": 2,
+      "title": "怪獣の花唄",
+      "artist": "Vaundy",
+      "damRequestNo": "5277-09",
+      "videoId": "UM9XNpgrqVk",
+      "videoTitle": "怪獣の花唄 / Vaundy ： MUSIC VIDEO",
+      "channel": "Vaundy",
+      "status": "OK"
+    },
+    {
+      "rank": 3,
+      "title": "マリーゴールド",
+      "artist": "あいみょん",
+      "damRequestNo": "5171-36",
+      "videoId": "0xSiBpUdW4E",
+      "videoTitle": "あいみょん - マリーゴールド【OFFICIAL MUSIC VIDEO】",
+      "channel": "あいみょん",
+      "status": "OK"
+    },
+    {
+      "rank": 4,
+      "title": "残酷な天使のテーゼ",
+      "artist": "高橋洋子",
+      "damRequestNo": "1896-04",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "3S5Yu9HpE3I",
+          "videoTitle": "残酷な天使のテーゼ - 高橋洋子（フル）",
+          "channel": "high_note Music Lounge"
+        },
+        {
+          "videoId": "qg9pWJbU1Ug",
+          "videoTitle": "ドレミファドン　残酷な天使のテーゼ&魂のルフラン　高橋洋子さん本人披露（2021）",
+          "channel": "クローズビルドライドウォッチ"
+        },
+        {
+          "videoId": "uD2nmdk2McY",
+          "videoTitle": "高橋洋子(타카하시 요코) - 残酷な天使のテーゼ (잔혹한 천사의 테제) [한국어 가사]",
+          "channel": "*최애곡만 번역*"
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "title": "さよならエレジー",
+      "artist": "菅田将暉",
+      "damRequestNo": "6052-97",
+      "videoId": "Xn7OuhLL16Y",
+      "videoTitle": "菅田将暉 - さよならエレジー",
+      "channel": "菅田将暉",
+      "status": "OK"
+    },
+    {
+      "rank": 6,
+      "title": "伯方の塩",
+      "artist": "塩谷信廣",
+      "damRequestNo": "1474-63",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "RC9Xu6QMTZ8",
+          "videoTitle": "【伯方塩業㈱公式】伯方の塩 サウンドロゴ",
+          "channel": "伯方塩業株式会社"
+        },
+        {
+          "videoId": "mcfa1pzeP58",
+          "videoTitle": "【伯方の塩】あの有名なCMソングをカラオケ風にしてみた。part2【BGM】",
+          "channel": "IM LABO（アイエム ラボ）"
+        },
+        {
+          "videoId": "-RO2hYyL9E4",
+          "videoTitle": "ほぼ本家！伯方の塩 #伯方の塩　#伯方の塩カラオケ",
+          "channel": "Mタモ"
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "title": "サウダージ",
+      "artist": "ポルノグラフィティ",
+      "damRequestNo": "6167-17",
+      "videoId": "lzsB4eKPdJI",
+      "videoTitle": "ポルノグラフィティ『サウダージ』MUSIC VIDEO",
+      "channel": "ポルノグラフィティ Official YouTube Channel",
+      "status": "OK"
+    },
+    {
+      "rank": 8,
+      "title": "ダーリン",
+      "artist": "Mrs. GREEN APPLE",
+      "damRequestNo": "1447-17",
+      "videoId": "L262NKlSl4s",
+      "videoTitle": "Mrs. GREEN APPLE「ダーリン」Official Music Video",
+      "channel": "Mrs. GREEN APPLE",
+      "status": "OK"
+    },
+    {
+      "rank": 9,
+      "title": "水平線",
+      "artist": "back number",
+      "damRequestNo": "5862-13",
+      "videoId": "iqEr3P78fz8",
+      "videoTitle": "back number - 水平線",
+      "channel": "back number",
+      "status": "OK"
+    },
+    {
+      "rank": 10,
+      "title": "ドライフラワー",
+      "artist": "優里",
+      "damRequestNo": "6844-05",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "kzZ6KXDM1RI",
+          "videoTitle": "優里『ドライフラワー』Official Music Video -ディレクターズカットver.-",
+          "channel": "優里 Official YouTube Channel"
+        },
+        {
+          "videoId": "Gk-moqsyfRY",
+          "videoTitle": "ドライフラワー ♪ 優里",
+          "channel": "FNS Music Festival"
+        },
+        {
+          "videoId": "weERytKD1Sc",
+          "videoTitle": "ドライフラワー",
+          "channel": "Yuuri - Topic"
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "title": "高嶺の花子さん",
+      "artist": "back number",
+      "damRequestNo": "5860-81",
+      "videoId": "SII-S-zCg-c",
+      "videoTitle": "back number - 高嶺の花子さん (full)",
+      "channel": "BackNumberVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 12,
+      "title": "奏(かなで)",
+      "artist": "スキマスイッチ",
+      "damRequestNo": "5025-04",
+      "videoId": "J5Z7tIq7bco",
+      "videoTitle": "スキマスイッチ - 「奏（かなで）」Music Video : SUKIMASWITCH / KANADE Music Video",
+      "channel": "SukimaSwitchVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 13,
+      "title": "小さな恋のうた",
+      "artist": "MONGOL800",
+      "damRequestNo": "6878-04",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "u8EkSB9zSpE",
+          "videoTitle": "MONGOL800 / 小さな恋のうた",
+          "channel": "（株）ハイウェーブ"
+        },
+        {
+          "videoId": "JoJ6lnF07U4",
+          "videoTitle": "小さな恋のうた",
+          "channel": "KIYOSAKU - Topic"
+        }
+      ]
+    },
+    {
+      "rank": 14,
+      "title": "点描の唄(feat.井上苑子)",
+      "artist": "Mrs. GREEN APPLE",
+      "damRequestNo": "6197-71",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "9UQQwRcHHQY",
+          "videoTitle": "Mrs. GREEN APPLE – 点描の唄【LIVE from ゼンジン未到とヴェルトラウム〜銘銘編〜】",
+          "channel": "Mrs. GREEN APPLE"
+        },
+        {
+          "videoId": "rWsiVWlvw2E",
+          "videoTitle": "Mrs. GREEN APPLE「点描の唄」Official Live Lyric Video",
+          "channel": "Mrs. GREEN APPLE"
+        },
+        {
+          "videoId": "sL-yJIyuEaM",
+          "videoTitle": "Tenbyouno Uta",
+          "channel": "Mrs. GREEN APPLE - Topic"
+        }
+      ]
+    },
+    {
+      "rank": 15,
+      "title": "チェリー",
+      "artist": "スピッツ",
+      "damRequestNo": "3171-14",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "Eze6-eHmtJg",
+          "videoTitle": "スピッツ / チェリー",
+          "channel": "spitzclips"
+        },
+        {
+          "videoId": "Naj96-wH_K0",
+          "videoTitle": "スピッツ チェリー",
+          "channel": "あい"
+        },
+        {
+          "videoId": "34qf5PfFVXo",
+          "videoTitle": "山口一郎「チェリー / スピッツ」",
+          "channel": "MASAXX"
+        }
+      ]
+    },
+    {
+      "rank": 16,
+      "title": "カブトムシ",
+      "artist": "aiko",
+      "damRequestNo": "5772-05",
+      "videoId": "wp2U40KI63A",
+      "videoTitle": "aiko- 『カブトムシ』music video",
+      "channel": "aikoOfficial",
+      "status": "OK"
+    },
+    {
+      "rank": 17,
+      "title": "ひまわりの約束",
+      "artist": "秦 基博",
+      "damRequestNo": "5617-21",
+      "videoId": "rKsQ-3N-Bks",
+      "videoTitle": "秦 基博 - 「ひまわりの約束」 Music Video",
+      "channel": "hatamotohiroVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 18,
+      "title": "シングルベッド",
+      "artist": "シャ乱Q",
+      "damRequestNo": "2975-03",
+      "videoId": "EOWmWftEVGQ",
+      "videoTitle": "シャ乱Q「シングルベッド」OFFICIAL MUSIC VIDEO",
+      "channel": "MUSIC Liverary",
+      "status": "OK"
+    },
+    {
+      "rank": 19,
+      "title": "恋人ごっこ",
+      "artist": "マカロニえんぴつ",
+      "damRequestNo": "5267-93",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "323j5BRFi7s",
+          "videoTitle": "マカロニえんぴつ「恋人ごっこ」MV",
+          "channel": "murffin discs"
+        },
+        {
+          "videoId": "dAzZGP2s4UE",
+          "videoTitle": "(歌詞)恋人ごっこ/マカロニえんぴつ",
+          "channel": "Sumomo"
+        },
+        {
+          "videoId": "5b3R19ZSizM",
+          "videoTitle": "【歌詞】恋人ごっこ-マカロニえんぴつ",
+          "channel": "root"
+        }
+      ]
+    },
+    {
+      "rank": 20,
+      "title": "ライラック",
+      "artist": "Mrs. GREEN APPLE",
+      "damRequestNo": "1447-11",
+      "videoId": "QjrkrVmC-8M",
+      "videoTitle": "Mrs. GREEN APPLE「ライラック」Official Music Video",
+      "channel": "Mrs. GREEN APPLE",
+      "status": "OK"
+    },
+    {
+      "rank": 21,
+      "title": "とくべチュ、して",
+      "artist": "=LOVE",
+      "damRequestNo": "1059-41",
+      "videoId": "F3P8vcZkIh4",
+      "videoTitle": "＝LOVE（イコールラブ）/ 18th Single『とくべチュ、して』【MV full】",
+      "channel": "＝LOVE（イコールラブ）公式チャンネル",
+      "status": "OK"
+    },
+    {
+      "rank": 22,
+      "title": "Story",
+      "artist": "AI",
+      "damRequestNo": "6953-17",
+      "videoId": "B2fPYlGKdXM",
+      "videoTitle": "AI - Story",
+      "channel": "AIVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 23,
+      "title": "愛のかたまり",
+      "artist": "KinKi Kids",
+      "damRequestNo": "5286-71",
+      "videoId": "58tpRlaJPTw",
+      "videoTitle": "愛のかたまり",
+      "channel": "KinKi Kids - Topic",
+      "status": "OK"
+    },
+    {
+      "rank": 24,
+      "title": "爆裂愛してる",
+      "artist": "M!LK",
+      "damRequestNo": "1405-25",
+      "videoId": "tpFDnOnOdSQ",
+      "videoTitle": "M!LK - 爆裂愛してる (Official Music Video)",
+      "channel": "M!LK",
+      "status": "OK"
+    },
+    {
+      "rank": 25,
+      "title": "366日",
+      "artist": "HY",
+      "damRequestNo": "3284-57",
+      "videoId": "glsH4Mgxz-g",
+      "videoTitle": "HY - 366日 (Official Music Video)",
+      "channel": "TV ASAHI MUSIC",
+      "status": "OK"
+    },
+    {
+      "rank": 26,
+      "title": "キセキ",
+      "artist": "GReeeeN",
+      "damRequestNo": "7401-20",
+      "videoId": "DwTinTO0o9I",
+      "videoTitle": "GReeeeN - キセキ",
+      "channel": "GReeeeNVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 27,
+      "title": "ハナミズキ",
+      "artist": "一青 窈",
+      "damRequestNo": "4368-24",
+      "videoId": "Lv9pOboKtjg",
+      "videoTitle": "一青窈 / ハナミズキ",
+      "channel": "一青窈",
+      "status": "OK"
+    },
+    {
+      "rank": 28,
+      "title": "最後の雨",
+      "artist": "中西保志",
+      "damRequestNo": "2453-01",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "9gcwCgunE9M",
+          "videoTitle": "「最後の雨」Saigo no Ame (The Last Rain) 🔶 中西保志  Yasushi Nakanishi",
+          "channel": "Masa dream channel Ⅱ"
+        },
+        {
+          "videoId": "On8lxPoBcoc",
+          "videoTitle": "中西保志 最後の雨",
+          "channel": "ケンタロ"
+        },
+        {
+          "videoId": "tenaYCLIuOc",
+          "videoTitle": "最後の雨",
+          "channel": "Yasushi Nakanishi - Topic"
+        }
+      ]
+    },
+    {
+      "rank": 29,
+      "title": "愛をこめて花束を",
+      "artist": "Superfly",
+      "damRequestNo": "4190-04",
+      "videoId": "gU5oN0KVofU",
+      "videoTitle": "Superfly 『愛をこめて花束を』Music Video",
+      "channel": "Superfly",
+      "status": "OK"
+    },
+    {
+      "rank": 30,
+      "title": "丸の内サディスティック",
+      "artist": "椎名林檎",
+      "damRequestNo": "5833-09",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "Sy_08-HcR3Y",
+          "videoTitle": "丸の内サディスティック - 椎名林檎（フル）",
+          "channel": "high_note Music Lounge"
+        },
+        {
+          "videoId": "zqyBr6Xl5mI",
+          "videoTitle": "【至って真面目に】椎名林檎 \"丸の内サディスティック\" 歌いました",
+          "channel": "Ryoji Takarabe財部亮治"
+        },
+        {
+          "videoId": "MXL9sQMjRSM",
+          "videoTitle": "丸の内サディスティック(弾き語り)",
+          "channel": "Fujii Kaze"
+        }
+      ]
+    },
+    {
+      "rank": 31,
+      "title": "アゲハ蝶",
+      "artist": "ポルノグラフィティ",
+      "damRequestNo": "6167-36",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "U8sV4WKNxLM",
+          "videoTitle": "アゲハ蝶 - ポルノグラフィティ（フル）",
+          "channel": "high_note Music Lounge"
+        },
+        {
+          "videoId": "Fk39WfOJVxw",
+          "videoTitle": "ドラマ 『良いこと悪いこと』 主題歌 「アゲハ蝶」 ポルノグラフィティ 【Kan/Rom/English Lyrics 歌詞】",
+          "channel": "Starlight Music"
+        },
+        {
+          "videoId": "wWN0a2jBKZU",
+          "videoTitle": "【歌詞】ポルノグラフィティ／アゲハ蝶【フル】",
+          "channel": "金魚草"
+        }
+      ]
+    },
+    {
+      "rank": 32,
+      "title": "イケナイ太陽",
+      "artist": "ORANGE RANGE",
+      "damRequestNo": "7308-24",
+      "videoId": "jx5z94WJblQ",
+      "videoTitle": "ORANGE RANGE – イケナイ太陽 (『花ざかりの君たちへ〜イケメン♂パラダイス〜』Special Music Video)",
+      "channel": "ORANGE RANGE",
+      "status": "OK"
+    },
+    {
+      "rank": 33,
+      "title": "アイノカタチ feat.HIDE(GReeeeN)",
+      "artist": "MISIA",
+      "damRequestNo": "6578-82",
+      "videoId": "IX87le_EokM",
+      "videoTitle": "MISIA - アイノカタチ feat.HIDE(GReeeeN) （Official Music Video）",
+      "channel": "MISIA",
+      "status": "OK"
+    },
+    {
+      "rank": 34,
+      "title": "世界が終るまでは…",
+      "artist": "WANDS",
+      "damRequestNo": "1312-16",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "xMvMW8rvVnQ",
+          "videoTitle": "WANDS「世界が終るまでは…」Official Music Video",
+          "channel": "Roku Official Youtube Channel."
+        }
+      ]
+    },
+    {
+      "rank": 35,
+      "title": "島人ぬ宝",
+      "artist": "BEGIN",
+      "damRequestNo": "1036-13",
+      "videoId": "E2LLhc7JJsY",
+      "videoTitle": "BEGIN / 「島人ぬ宝」20周年MV",
+      "channel": "BEGIN ch",
+      "status": "OK"
+    },
+    {
+      "rank": 36,
+      "title": "HOT LIMIT",
+      "artist": "T.M.Revolution",
+      "damRequestNo": "4681-10",
+      "videoId": "vBmU5v2EyxM",
+      "videoTitle": "T.M.Revolution  - HOT LIMIT｜Official Music Video",
+      "channel": "T.M.Revolution",
+      "status": "OK"
+    },
+    {
+      "rank": 37,
+      "title": "IRIS OUT",
+      "artist": "米津玄師",
+      "damRequestNo": "1208-61",
+      "videoId": "LmZD-TU96q4",
+      "videoTitle": "米津玄師  Kenshi Yonezu - IRIS OUT",
+      "channel": "Kenshi Yonezu  米津玄師",
+      "status": "OK"
+    },
+    {
+      "rank": 38,
+      "title": "花束",
+      "artist": "back number",
+      "damRequestNo": "5870-11",
+      "videoId": "meZPD28Y7xE",
+      "videoTitle": "back number - 花束 (full)",
+      "channel": "BackNumberVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 39,
+      "title": "糸",
+      "artist": "中島みゆき",
+      "damRequestNo": "2463-35",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "LtZEF9kHMPo",
+          "videoTitle": "中島みゆき / 糸（オルゴールバージョン）",
+          "channel": "高音質オルゴールコレクション"
+        },
+        {
+          "videoId": "e8ZPstsuDTk",
+          "videoTitle": "糸/中島みゆき《ストローク&コード付・初心者簡単ウクレレ》",
+          "channel": "Koyuki channel"
+        },
+        {
+          "videoId": "Qtb9iQtpxhw",
+          "videoTitle": "糸 (English Ver.) – 中島みゆき | Timeless Jazz Ballad | Deep Emotional Arrange",
+          "channel": "AI Music Box"
+        }
+      ]
+    },
+    {
+      "rank": 40,
+      "title": "KissHug",
+      "artist": "aiko",
+      "damRequestNo": "2404-75",
+      "videoId": "r8yTsDQCfR0",
+      "videoTitle": "aiko- 『KissHug』music video",
+      "channel": "aikoOfficial",
+      "status": "OK"
+    },
+    {
+      "rank": 41,
+      "title": "ケセラセラ",
+      "artist": "Mrs. GREEN APPLE",
+      "damRequestNo": "1314-68",
+      "videoId": "Jy-QS27q7lA",
+      "videoTitle": "Mrs. GREEN APPLE「ケセラセラ」Official Music Video",
+      "channel": "Mrs. GREEN APPLE",
+      "status": "OK"
+    },
+    {
+      "rank": 42,
+      "title": "大阪LOVER",
+      "artist": "DREAMS COME TRUE",
+      "damRequestNo": "7243-32",
+      "videoId": "E-DAUGDEeRA",
+      "videoTitle": "DREAMS COME TRUE - 「大阪LOVER」",
+      "channel": "DreamsComeTrueVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 43,
+      "title": "革命道中",
+      "artist": "アイナ･ジ･エンド",
+      "damRequestNo": "1123-55",
+      "videoId": "NLIGDjKBLY0",
+      "videoTitle": "アイナ・ジ・エンド / 革命道中 - On The Way [Official Music Video]（TVアニメ『ダンダダン』第2期オープニングテーマ）",
+      "channel": "アイナ・ジ・エンド Official",
+      "status": "OK"
+    },
+    {
+      "rank": 44,
+      "title": "Lemon",
+      "artist": "米津玄師",
+      "damRequestNo": "3246-51",
+      "videoId": "SX_ViT4Ra7k",
+      "videoTitle": "米津玄師  Kenshi Yonezu  - Lemon",
+      "channel": "Kenshi Yonezu  米津玄師",
+      "status": "OK"
+    },
+    {
+      "rank": 45,
+      "title": "青と夏",
+      "artist": "Mrs. GREEN APPLE",
+      "damRequestNo": "6197-70",
+      "videoId": "m34DPnRUfMU",
+      "videoTitle": "Mrs. GREEN APPLE - 青と夏",
+      "channel": "MrsGREENAPPLEVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 46,
+      "title": "いとしのエリー",
+      "artist": "サザンオールスターズ",
+      "damRequestNo": "1403-20",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "vmt89a4l8k0",
+          "videoTitle": "[MV] いとしのエリー (歌詞入り) サザンオールスターズ",
+          "channel": "愛LOVE  愛LAND  we love Southern All Stars"
+        },
+        {
+          "videoId": "yHCbBJZ5Bq4",
+          "videoTitle": "サザンオールスターズ　いとしのエリー",
+          "channel": "ごちそうさまでした。"
+        },
+        {
+          "videoId": "tXxHt3FLGyM",
+          "videoTitle": "いとしのエリー",
+          "channel": "anninmari"
+        }
+      ]
+    },
+    {
+      "rank": 47,
+      "title": "わたがし",
+      "artist": "back number",
+      "damRequestNo": "5860-25",
+      "videoId": "uy_BaRBJIzQ",
+      "videoTitle": "back number - わたがし (full)",
+      "channel": "BackNumberVEVO",
+      "status": "OK"
+    },
+    {
+      "rank": 48,
+      "title": "ブルーアンバー",
+      "artist": "back number",
+      "damRequestNo": "1060-83",
+      "videoId": "ru6i9lo4zBE",
+      "videoTitle": "back number - ブルーアンバー 【カンテレ・フジテレビ系月10ドラマ『あなたを奪ったその日から』主題歌】",
+      "channel": "back number",
+      "status": "OK"
+    },
+    {
+      "rank": 49,
+      "title": "歌うたいのバラッド",
+      "artist": "斉藤和義",
+      "damRequestNo": "3010-13",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "9G82-cb5zUk",
+          "videoTitle": "斉藤和義 – 歌うたいのバラッド（2008 Ver.）[Music Video]",
+          "channel": "斉藤和義"
+        },
+        {
+          "videoId": "qt9VPE9N23U",
+          "videoTitle": "斉藤和義 歌うたいのバラッドpv",
+          "channel": "畠山爽"
+        },
+        {
+          "videoId": "2rpjc2gMIGQ",
+          "videoTitle": "斉藤和義 歌うたいのバラッド white falcon",
+          "channel": "じょう吉"
+        }
+      ]
+    },
+    {
+      "rank": 50,
+      "title": "タッチ",
+      "artist": "岩崎良美",
+      "damRequestNo": "1748-01",
+      "status": "要確認",
+      "candidates": [
+        {
+          "videoId": "j0vpP976jZg",
+          "videoTitle": "タッチ - 岩崎良美（フル）",
+          "channel": "high_note Music Lounge"
+        },
+        {
+          "videoId": "7wwtvgJql38",
+          "videoTitle": "岩崎良美　～ タッチ ～",
+          "channel": "M channel"
+        },
+        {
+          "videoId": "_VJ6jnxQDks",
+          "videoTitle": "岩崎良美 - 「タッチ」(2015年 NHK「新・BS日本のうた」)",
+          "channel": "ponycanyon"
+        }
+      ]
+    }
+  ]
+}

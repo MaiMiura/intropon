@@ -1,7 +1,7 @@
 """DAM公式サイトの「月間ランキング（総合）」を読み取って JSON に保存する。
 
 使い方:
-    python3 tools/dam_ranking.py            # 上位50曲 → playlists/dam-monthly-YYYY-MM.json
+    python3 tools/dam_ranking.py            # 上位50曲 → playlists/dam-monthly.json
     python3 tools/dam_ranking.py --top 30   # 件数を変える
 
 YouTube の動画は別のスクリプト（tools/match_youtube.py）で探して書き足す。
@@ -77,10 +77,11 @@ def main():
     songs = songs[: args.top]
 
     month = updated[:7]
-    out = ROOT / "playlists" / f"dam-monthly-{month}.json"
+    # 毎月同じファイルを上書きする（前の月から残った曲の動画IDを引き継げるように。過去の分は git に残る）
+    out = ROOT / "playlists" / "dam-monthly.json"
     out.parent.mkdir(exist_ok=True)
 
-    # 既にファイルがあれば、確認済みの動画IDなどは引き継ぐ
+    # 既にファイルがあれば、確認済みの動画IDなどは引き継ぐ（先月から続けてランクインした曲も）
     prev = {}
     if out.exists():
         for s in json.loads(out.read_text(encoding="utf-8"))["songs"]:
