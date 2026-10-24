@@ -254,6 +254,7 @@ let index = 0;    // 今の問題番号
 let state = 'idle'; // idle | playing | paused | revealed
 let timer = null;
 let pendingPlaylist = null; // プレイリスト読み込み待ち
+let songInfo = {};  // 動画ID → 正解に出す曲名（DAMランキングなど、曲名がわかっているとき）
 
 let players = [];   // [{ name, score }]
 let winners = new Set(); // この問題で正解した人（index）
@@ -268,6 +269,8 @@ function track(name, params) {
 // ---------- 入力の解析 ----------
 function parseSource(text) {
   const t = text.trim();
+  // サイト内の曲リスト（playlists/*.json）
+  if (/^[\w./-]+\.json$/.test(t)) return { json: t };
   const list = t.match(/[?&]list=([\w-]+)/);
   if (list) return { playlist: list[1] };
   if (/^(PL|OL|UU|RD|FL)[\w-]{10,}$/.test(t)) return { playlist: t };
@@ -367,14 +370,26 @@ $('poster').onclick = () => $('poster').classList.add('hidden');
 // ---------- おすすめプレイリスト ----------
 // 押すとURL欄に入る。URL欄を自分で書き換えたら選択は外れる
 const PRESETS = [
+  { name: '🏆 DAM 月間TOP50', json: 'playlists/dam-monthly.json' },
   { name: '🎤 カラオケヒット', list: 'RDCLAK5uy_kW4l3hmtC_Aq2XCvin1b3h6tziPMH0tsk' },
   { name: '📼 平成ヒット', list: 'RDCLAK5uy_mr4jZnUpTfqqDqv04G7nf6o2ZtlJpNRMk' },
   { name: '🎸 Mr.Children', list: 'RDCLAK5uy_mw_KV-pS07X5XXO5Z-6Kso3XP5PpYKuDM' },
 ];
-const presetUrl = (p) => `https://www.youtube.com/playlist?list=${p.list}`;
+const presetUrl = (p) => p.json || `https://www.youtube.com/playlist?list=${p.list}`;
 function currentPreset() {
   const src = parseSource($('src').value);
-  return PRESETS.find((p) => src && src.playlist === p.list);
+  return PRESETS.find((p) => src && (p.json ? src.json === p.json : src.playlist === p.list));
+}
+
+// 曲リスト（tools/dam_ranking.py → tools/match_youtube.py で作ったもの）を読む。
+// 動画が決まっていない曲（status: 要確認）は出題しない
+async function loadSongList(url) {
+  const res = await fetch(url, { cache: 'no-cache' });
+  if (!res.ok) throw new Error(res.status);
+  const data = await res.json();
+  const songs = data.songs.filter((s) => s.videoId && s.status === 'OK');
+  songInfo = Object.fromEntries(songs.map((s) => [s.videoId, `${s.title} / ${s.artist}`]));
+  return songs.map((s) => s.videoId);
 }
 function renderPresets() {
   const cur = currentPreset();
@@ -448,6 +463,15 @@ async function startGame(keepScores) {
   save(STORE.src, $('src').value);
 
   let ids = src.videos;
+  songInfo = {};
+  if (src.json) {
+    $('startBtn').disabled = true; $('startBtn').textContent = '曲リスト読み込み中…';
+    try { ids = await loadSongList(src.json); }
+    catch (_) { $('err').textContent = '曲リストを読み込めませんでした'; }
+    $('startBtn').disabled = false; $('startBtn').textContent = 'スタート';
+    if (!ids) return;
+    if (!ids.length) { $('err').textContent = '再生できる曲がありません'; return; }
+  }
   if (src.playlist) {
     $('startBtn').disabled = true; $('startBtn').textContent = 'プレイリスト読み込み中…';
     try { ids = await loadPlaylist(src.playlist); }
@@ -690,7 +714,8 @@ $('restartBtn').onclick = () => play(true);
 $('revealBtn').onclick = () => {
   stopCountdown();
   const d = player.getVideoData();
-  $('answer').textContent = d && d.title ? `🎉 ${d.title}` : '（曲名を取得できませんでした）';
+  const name = songInfo[queue[index]] || (d && d.title);
+  $('answer').textContent = name ? `🎉 ${name}` : '（曲名を取得できませんでした）';
   setView('revealed');
   renderWinnerButtons();
 };

@@ -1,0 +1,50 @@
+# 毎月、DAM の月間ランキングを取り込んで「🏆 DAM 月間TOP50」を更新する
+# 事前に Settings → Secrets and variables → Actions に YOUTUBE_API_KEY を登録しておく
+name: DAM月間ランキング更新
+
+on:
+  schedule:
+    - cron: "17 0 2 * *" # 毎月2日 9:17（日本時間）。DAM は毎月1日に更新される
+  workflow_dispatch: # Actions タブから手動でも実行できる
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: ランキングを取り込む
+        run: python3 tools/dam_ranking.py
+
+      - name: YouTube の動画を探す
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python3 tools/match_youtube.py
+
+      - name: 要確認の曲をまとめる
+        run: |
+          python3 - >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          import json
+          d = json.load(open("playlists/dam-monthly.json", encoding="utf-8"))
+          ok = [s for s in d["songs"] if s.get("status") == "OK"]
+          check = [s for s in d["songs"] if s.get("status") != "OK"]
+          print(f"## {d['name']}\n\n出題できる曲: {len(ok)}曲 / 要確認: {len(check)}曲\n")
+          for s in check:
+              print(f"- {s['rank']}. {s['title']} / {s['artist']}")
+          EOF
+
+      - name: 変わっていたらコミット
+        run: |
+          if git diff --quiet; then echo "変更なし"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add playlists/dam-monthly.json
+          git commit -m "DAM月間ランキングを更新（$(python3 -c 'import json;print(json.load(open("playlists/dam-monthly.json"))["updated"])')）"
+          git push
