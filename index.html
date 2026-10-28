@@ -90,9 +90,16 @@
   .screen { position: relative; width: 100%; height: 26dvh; min-height: 140px; flex-shrink: 0; border-radius: 16px; overflow: hidden; background: #000; }
   .screen #player, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
   .cover {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #312e81, #831843); font-size: 80px; font-weight: 900;
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    background: linear-gradient(135deg, #312e81, #831843); font-size: 80px; font-weight: 900; line-height: 1;
+    border-radius: 0; padding: 0; border: 4px solid transparent;
   }
+  .cover:disabled { opacity: 1; }
+  .cover:disabled:active { transform: none; filter: none; }
+  .cover-hint { display: none; font-size: 22px; font-weight: 800; padding: 8px 18px; border-radius: 999px; background: var(--accent2); color: #052e16; }
+  /* ストップ後は「?」がそのまま「正解を見る」ボタンになる */
+  .cover.ready { border-color: var(--accent2); animation: pulse 1.2s infinite; }
+  .cover.ready .cover-hint { display: block; }
   .info { display: flex; justify-content: center; align-items: baseline; gap: 12px; flex-shrink: 0; }
   .answer { text-align: center; font-size: 20px; font-weight: 800; word-break: break-word; }
   .time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 15px; }
@@ -114,8 +121,7 @@
   .countdown.urgent .num { color: var(--accent); }
   .countdown.over { background: #7f1d1d; }
   .countdown.over .num { font-size: min(14vw, 10dvh); color: #fff; }
-  .area .reveal { flex: 1.2; font-size: 30px; }
-  .area .row { flex: 1; }
+  .area .row { flex: .7; }
   .area .row button { font-size: 22px; }
 
   /* 正解者ボタン */
@@ -189,7 +195,7 @@
     <div class="scores" id="scores"></div>
     <div class="screen">
       <div id="player"></div>
-      <div class="cover" id="cover">?</div>
+      <button class="cover" id="cover" disabled aria-label="正解を見る"><span>?</span><span class="cover-hint">👀 タップで正解を見る</span></button>
     </div>
     <div class="info">
       <div class="answer" id="answer"></div>
@@ -208,7 +214,6 @@
         <div class="num" id="countNum">10</div>
         <div class="label" id="countLabel">回答タイム</div>
       </div>
-      <button class="ok reveal" id="revealBtn">正解を見る</button>
       <div class="row">
         <button id="resumeBtn">続きを流す</button>
         <button id="restartBtn">最初から流す</button>
@@ -627,6 +632,8 @@ function setView(s) {
   $('pausedArea').classList.toggle('hidden', s !== 'paused');
   $('revealArea').classList.toggle('hidden', s !== 'revealed');
   $('cover').classList.toggle('hidden', s === 'revealed');
+  $('cover').classList.toggle('ready', s === 'paused');
+  $('cover').disabled = s !== 'paused';
 }
 
 function showNotice(msg) {
@@ -695,6 +702,7 @@ function pause() {
   unlockAudio();
   player.pauseVideo();
   stopTimer();
+  pausedAt = Date.now();
   setView('paused');
   startCountdown();
 }
@@ -709,9 +717,13 @@ function startTimer() {
 function stopTimer() { clearInterval(timer); timer = null; }
 
 $('bigBtn').onclick = () => (state === 'playing' ? pause() : play(true));
-$('resumeBtn').onclick = () => play(false);
-$('restartBtn').onclick = () => play(true);
-$('revealBtn').onclick = () => {
+// ストップ直後の連打で下のボタンを押してしまわないよう、少しの間だけ無視する
+let pausedAt = 0;
+const justPaused = () => Date.now() - pausedAt < 600;
+$('resumeBtn').onclick = () => { if (!justPaused()) play(false); };
+$('restartBtn').onclick = () => { if (!justPaused()) play(true); };
+$('cover').onclick = () => {
+  if (state !== 'paused') return;
   stopCountdown();
   const d = player.getVideoData();
   const name = songInfo[queue[index]] || (d && d.title);
